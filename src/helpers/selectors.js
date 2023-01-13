@@ -13,3 +13,20 @@ const output = filteredDays[0].appointments.map(appointment => {
 
 return output
 }
+
+
+
+export function getInterview(state, interview) {
+
+  const { interviewers } = state;
+
+  if (!interview) {
+    return null;
+  }
+
+  const interviewerId = interview.interviewer;
+  const interviewer = interviewers[interviewerId];
+
+  return {...interview, interviewer}
+
+}
