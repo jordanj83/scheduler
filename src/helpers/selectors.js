@@ -14,7 +14,16 @@ const output = filteredDays[0].appointments.map(appointment => {
 return output
 }
 
+export function getInterviewersForDay(state, day) {
 
+  const filteredDays = state.days.filter(dayName => dayName.name === day);
+
+  if (!filteredDays.length) {
+    return [];
+  }
+
+  return filteredDays[0].interviewers.map(id => state.interviewers[id]);
+}
 
 export function getInterview(state, interview) {
 
