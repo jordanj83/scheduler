@@ -24,15 +24,15 @@ export default function useApplicationData() {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  function updateSpots(days, appointments) {
-    const targetDay = days.find(day => day.name === state.day);
-    const targetIndex = days.findIndex(day => day.name === state.day);
-    const targetAppointment = targetDay.appointments;
-    const spots = targetAppointment.filter(appointment => appointments[appointment].interview === null).length;
-    const newDays = [...days];
-    newDays[targetIndex].spots = spots;
-    return newDays;
-  }
+  const updateSpots = (state, appointments) => {
+    const dayObj = state.days.find(day => day.name === state.day);
+
+    const spots = dayObj.appointments
+      .filter(id => appointments[id].interview === null)
+      .length;
+
+    return state.days.map(day => day.name === state.day ? { ...day, spots } : day);
+  };
 
 
   function bookInterview(id, interview) {
