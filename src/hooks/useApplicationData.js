@@ -24,8 +24,18 @@ export default function useApplicationData() {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  const bookInterview = (id, interview) => {
-    console.log(id, interview);
+  function updateSpots(days, appointments) {
+    const targetDay = days.find(day => day.name === state.day);
+    const targetIndex = days.findIndex(day => day.name === state.day);
+    const targetAppointment = targetDay.appointments;
+    const spots = targetAppointment.filter(appointment => appointments[appointment].interview === null).length;
+    const newDays = [...days];
+    newDays[targetIndex].spots = spots;
+    return newDays;
+  }
+
+
+  function bookInterview(id, interview) {
 
     const appointment = {
       ...state.appointments[id],
@@ -36,38 +46,30 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    return axios.put(`/api/appointments/${appointment.id}`, { interview })
-      .then(res => setState({
-        ...state,
-        appointments
-      }));
+    const days = updateSpots(state.days, appointments);
 
+    return axios.put(`/api/appointments/${id}`, { interview })
+      .then(res => {
+        setState({ ...state, appointments, days });
+      });
+  }
 
-  };
+  function cancelInterview(id) {
 
-  const cancelInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: null
     };
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
-    return axios.delete(`/api/appointments/${appointment.id}`, { interview })
-      .then(res => setState({
-        ...state,
-        appointments
-      }));
+    const days = updateSpots(state.days, appointments);
 
-  };
+    return axios.delete(`/api/appointments/${id}`)
+      .then(res => setState({ ...state, appointments, days }));
+  }
 
-  return {
-    state,
-    setDay,
-    bookInterview,
-    cancelInterview
-  };
+  return { state, setDay, bookInterview, cancelInterview };
 
-
-}
+};
