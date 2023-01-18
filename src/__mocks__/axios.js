@@ -29,15 +29,25 @@ export default {
   }),
 
   put: jest.fn((url) => {
-    if (url === "/api/appointments/1") {
+    
       return Promise.resolve({
         status: 204,
         statusText: "OK",
         data: fixtures.days,
       });
-    }
+
   }),
+  
+  delete: jest.fn((url) => {
+    
+    return Promise.resolve({
+      status: 204,
+      statusText: "OK",
+      data: fixtures.days,
+    });
+  })
 };
+
 
 const fixtures = {
   days: [
