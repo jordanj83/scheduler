@@ -9,13 +9,13 @@ export default function Form(props) {
   const reset = () => {
     setStudentName("");
     setInterviewer(null);
-  }
+  };
   const [error, setError] = useState("");
   const cancel = () => {
-    reset()
+    reset();
     setError("");
-    props.onCancel()
-  }
+    props.onCancel();
+  };
   function validate() {
     if (studentName === "") {
       setError("Student name cannot be blank");
@@ -45,7 +45,7 @@ export default function Form(props) {
           />
 
         </form>
-        <section 
+        <section
           className="appointment__validation">{error}
         </section>
 
@@ -63,7 +63,7 @@ export default function Form(props) {
           <Button onClick={validate} confirm>
             Save
           </Button>
-          
+
         </section>
       </section>
     </main>
